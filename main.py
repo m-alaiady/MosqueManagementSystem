@@ -22,7 +22,6 @@ def execute(sql, return_flag=False):
         return cursor.execute(sql)
 
 
-
 def show_all(lb):
     info = execute("SELECT * FROM users")
     clean_list_box(lb)
@@ -63,13 +62,12 @@ def add_entry(lb):
     if id == "" or name == "" or type == "" or address == "" or coordinates == "" or imam_name == "":
         messagebox.showwarning("Warning", "All fields are required!")
     else:
-        clean_list_box()
+        clean_list_box(lb)
         execute(f"""
-            INSERT INTO users VALUES('{id}','{name}','{type}','{address}','{coordinates}','{imam_name}')
+            INSERT INTO users VALUES('{id}','{name}','{address}','{type.strip()}','{coordinates}','{imam_name}')
         """)
         conn.commit()
         lb.insert("end", "Inserted Successfully!")
-
 
 
 def format_labels_and_entries(label, entry):
@@ -96,7 +94,7 @@ name_label = Label(window, text='Name')
 name_entry = Entry(window)
 
 type_label = Label(window, text='Type')
-options_list = ["Option 1", "Option 2", "Option 3", "Option 4"]
+options_list = ["         Jama          ", "       Masjid          ", "        Musalla      "]
 value_inside = StringVar(window)
 
 value_inside.set("Select an Option")
