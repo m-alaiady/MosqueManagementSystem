@@ -28,6 +28,7 @@ class Mosque:
         self.cursor = self.conn.cursor()
 
         window = Tk()
+        window.title("Mosque Management System")
         window.geometry(self.WINDOW_SIZE)
 
         id_label = Label(window, text='ID')
@@ -191,8 +192,7 @@ class Mosque:
             return
 
     def display_map(self):
-        plt.figure(figsize=(8, 8))
-
+        plt.figure("Mosque Location", figsize=(8, 8))
         m = Basemap(projection='nsper', lon_0=40, lat_0=20)
         # m = Basemap(width=100, height=100, projection='mill')
         m.drawcoastlines()
@@ -228,5 +228,5 @@ class Mosque:
     def __del__(self):
         self.conn.close()
 
-
-mosque = Mosque()
+if __name__ == "__main__":
+    mosque = Mosque()
