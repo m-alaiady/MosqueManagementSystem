@@ -9,7 +9,9 @@ A mosque management system project made by using python OOP it have the followin
 6. **Display Map**
 
 ### Screen Shots
-![screenshot](file://C:\Users\Gamer\Pictures\Screenshots\123.png)
-![screenshot](file://C:\Users\Gamer\Pictures\Screenshots\location.png)
+![123](https://user-images.githubusercontent.com/84629651/166123554-1513b012-ef11-447f-a5bc-1473e0c00ba2.png)
+
+## Show mosques coordinates on a map
+![location](https://user-images.githubusercontent.com/84629651/166123565-d8e10677-8f63-4e2e-b247-58f0eb3b25d5.png)
 
 
