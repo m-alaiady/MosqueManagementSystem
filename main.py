@@ -43,7 +43,9 @@ class Mosque:
         value_inside = StringVar(window)
 
         value_inside.set("Select an Option")
-        self.type_entry = OptionMenu(window, value_inside, *options_list, command=self.__get_selected_value)
+        self.type_entry = OptionMenu(
+            window, value_inside, *options_list, command=self.__get_selected_value
+        )
 
         address_label = Label(window, text='Address')
         self.address_entry = Entry(window)
@@ -74,7 +76,9 @@ class Mosque:
             self.type_value, self.address_entry.get(),
             self.coordinates_entry.get(), self.imam_name_entry.get()
         ))
-        delete_entry_button = Button(window, text="Delete Entry", command=lambda: self.delete(self.id_entry.get()))
+        delete_entry_button = Button(
+            window, text="Delete Entry", command=lambda: self.delete(self.id_entry.get())
+        )
         display_on_map_button = Button(window, text="Display on Map", command=lambda: self.display_map())
 
         display_all_button.grid(row=4, column=1, pady=10, padx=2)
@@ -142,8 +146,9 @@ class Mosque:
         if id == "" or name == "" or type == "" or address == "" or coordinates == "" or imam_name == "":
             messagebox.showwarning("All fields required", "All fields are required!")
         else:
-            regexp = re.compile(r'^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))('
-                                '\.\d+)?)$')
+            regexp = re.compile(
+                r'^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(''\.\d+)?)$'
+            )
             if not regexp.search(coordinates):
                 messagebox.showwarning("Invalid coordinates format", "Invalid coordinates!")
             else:
