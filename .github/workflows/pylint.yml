@@ -19,7 +19,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint
     - name: autopep8
-      uses: peter-evans/autopep8@v1.2.1
+      id: autopep8
+      uses: peter-evans/autopep8@v1
+      with:
+        args: --recursive --in-place --aggressive --aggressive .
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
