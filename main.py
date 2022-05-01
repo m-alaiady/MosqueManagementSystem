@@ -27,9 +27,10 @@ class Mosque:
         """
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-many-locals
+    # pylint: disable=too-many-arguments
     # pylint: disable=too-many-boolean-expressions
     # pylint: disable=inconsistent-return-statements
-
+    # pylint: disable=import-error
     conn = ""
     cursor = ""
     WINDOW_SIZE = "975x150"
@@ -174,12 +175,12 @@ class Mosque:
             if empty:
                 self.list_box.insert("end", "No Result!")
 
-    def insert(self, mosque_id, name, type, address, coordinates, imam_name):
+    def insert(self, mosque_id, name, mosque_type, address, coordinates, imam_name):
         """
             insert method
                insert a new entry into the table
         """
-        if mosque_id == "" or name == "" or type == "" \
+        if mosque_id == "" or name == "" or mosque_type == "" \
                 or address == "" or coordinates == "" or imam_name == "":
             messagebox.showwarning("All fields required", "All fields are required!")
         else:
@@ -203,7 +204,7 @@ class Mosque:
                 self.__clean_list_box()
                 self.__execute(f"""
                     INSERT INTO {self.TABLE_NAME} 
-                    VALUES('{mosque_id}','{name}','{address}','{type.strip()}','{coordinates}','{imam_name}')
+                    VALUES('{mosque_id}','{name}','{address}','{mosque_type.strip()}','{coordinates}','{imam_name}')
                 """)
                 self.conn.commit()
                 messagebox.showinfo(
