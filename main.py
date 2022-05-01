@@ -2,7 +2,9 @@
     Mosque Management System
         enable users to add, update, delete, search, display,
         as well as display on map mosques around the world
+
         @author: Mohammed Alaiadhy
+        @timestamp: 2022-05-01 06:53 AM
     """
 import sqlite3
 import re
@@ -23,6 +25,7 @@ class Mosque:
                 5. search
                 6. display map
         """
+    # pylint: disable=too-many-instance-attributes
     conn = ""
     cursor = ""
     WINDOW_SIZE = "975x150"
