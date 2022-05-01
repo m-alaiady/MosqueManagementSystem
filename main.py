@@ -1,9 +1,9 @@
 import sqlite3
-from mpl_toolkits.basemap import Basemap
-import matplotlib.pyplot as plt
+import re
 from tkinter import *
 from tkinter import messagebox
-import re
+from mpl_toolkits.basemap import Basemap
+import matplotlib.pyplot as plt
 
 
 class Mosque:
@@ -217,12 +217,12 @@ class Mosque:
 
     def display_map(self):
         plt.figure("Mosque Location", figsize=(8, 8))
-        m = Basemap(projection='nsper', lon_0=40, lat_0=20)
+        map = Basemap(projection='nsper', lon_0=40, lat_0=20)
         # m = Basemap(width=100, height=100, projection='mill')
-        m.drawcoastlines()
+        map.drawcoastlines()
 
-        m.drawcountries()
-        m.bluemarble()
+        map.drawcountries()
+        map.bluemarble()
         coordinates = []
         labels = []
         self.__execute(f"SELECT coordinates FROM {self.TABLE_NAME}")
@@ -243,8 +243,8 @@ class Mosque:
 
             for coordinate in coordinates:
                 # Latitude = coordinate[1], Longitude = coordinate[0]
-                xpt, ypt = m(float(coordinate[1]), float(coordinate[0]))
-                m.plot(xpt, ypt, 'ro', markersize=5)
+                xpt, ypt = map(float(coordinate[1]), float(coordinate[0]))
+                map.plot(xpt, ypt, 'ro', markersize=5)
                 plt.text(xpt, ypt, labels[label_index], color='white', fontsize=7)
                 label_index += 1
 
