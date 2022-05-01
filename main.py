@@ -11,7 +11,16 @@ from tkinter import messagebox
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 
-
+"""
+    Mosque Class
+        @methods
+            1. display
+            2. insert
+            3. delete
+            4. update
+            5. search
+            6. display map
+    """
 class Mosque:
     conn = ""
     cursor = ""
@@ -26,7 +35,7 @@ class Mosque:
     address_entry = ""
     coordinates_entry = ""
     imam_name_entry = ""
-    lb = ""
+    list_box = ""
     format_row = 1
     format_column_offset = 1
 
@@ -69,8 +78,8 @@ class Mosque:
         self.__format_labels_and_entries(coordinates_label, self.coordinates_entry)
         self.__format_labels_and_entries(imam_name_label, self.imam_name_entry)
 
-        self.lb = Listbox(window, width=100)
-        self.lb.place(x=450, y=0, height=145, width=500)
+        self.list_box = Listbox(window, width=100)
+        self.list_box.place(x=450, y=0, height=145, width=500)
 
         display_all_button = Button(window, text="Display All", command=self.display)
         search_by_name_button = Button(window, text="Search by name", command=self.search)
@@ -102,8 +111,7 @@ class Mosque:
         if return_flag:
             info = self.cursor.execute(sql)
             return info
-        else:
-            return self.cursor.execute(sql)
+        return self.cursor.execute(sql)
 
     def __format_labels_and_entries(self, label, entry):
         col = 0
@@ -118,7 +126,7 @@ class Mosque:
         self.format_column_offset += 1
 
     def __clean_list_box(self):
-        self.lb.delete(0, END)
+        self.list_box.delete(0, END)
 
     def __get_selected_value(self, value):
         self.type_value = value
@@ -134,7 +142,7 @@ class Mosque:
             self.__execute(f"SELECT * FROM {self.TABLE_NAME}")
             rows = self.cursor.fetchall()
             for data in rows:
-                self.lb.insert("end", data)
+                self.list_box.insert("end", data)
 
     def search(self):
         get_name = self.name_entry.get()
@@ -145,10 +153,10 @@ class Mosque:
             info = self.__execute(f"SELECT * FROM {self.TABLE_NAME} WHERE name LIKE '%{get_name}%'")
             empty = True
             for data in info:
-                self.lb.insert("end", data)
+                self.list_box.insert("end", data)
                 return data
             if empty:
-                self.lb.insert("end", "No Result!")
+                self.list_box.insert("end", "No Result!")
 
     def insert(self, id, name, type, address, coordinates, imam_name):
         if id == "" or name == "" or type == "" \
