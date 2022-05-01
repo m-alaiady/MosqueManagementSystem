@@ -1,6 +1,12 @@
+"""
+    Mosque Management System
+        enable users to add, update, delete, search, display,
+        as well as display on map mosques around the world
+        @author: Mohammed Alaiadhy
+    """
 import sqlite3
 import re
-from tkinter import *
+from tkinter import Tk, Label, Button, Listbox, Entry, OptionMenu, StringVar, END
 from tkinter import messagebox
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
@@ -66,9 +72,9 @@ class Mosque:
         self.lb = Listbox(window, width=100)
         self.lb.place(x=450, y=0, height=145, width=500)
 
-        display_all_button = Button(window, text="Display All", command=lambda: self.display())
-        search_by_name_button = Button(window, text="Search by name", command=lambda: self.search())
-        update_entry_button = Button(window, text="Update Entry", command=lambda: self.update(
+        display_all_button = Button(window, text="Display All", command=self.display)
+        search_by_name_button = Button(window, text="Search by name", command=self.search)
+        update_entry_button = Button(window, text="Update Entry", command= lambda:self.update(
             self.id_entry.get(), self.imam_name_entry.get()
         ))
         add_entry_button = Button(window, text="Add Entry ", command=lambda: self.insert(
@@ -184,16 +190,16 @@ class Mosque:
         if exist is None:
             messagebox.showwarning("Unknown ID", "Cannot find the specified ID")
             return
-        else:
-            self.__execute(f"""
-                         DELETE FROM {self.TABLE_NAME} WHERE id = '{id}'
-                     """)
-            self.conn.commit()
-            messagebox.showinfo(
-                self.SUCCESS_OPERATION_TEXT, "Record Deleted Successfully!"
-            )
-            self.display()
-            return
+
+        self.__execute(f"""
+                     DELETE FROM {self.TABLE_NAME} WHERE id = '{id}'
+                 """)
+        self.conn.commit()
+        messagebox.showinfo(
+            self.SUCCESS_OPERATION_TEXT, "Record Deleted Successfully!"
+        )
+        self.display()
+        return
 
     def update(self, id, imam_name):
         if self.id_entry.get() == "" or self.imam_name_entry.get() == "":
