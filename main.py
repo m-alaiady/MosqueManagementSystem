@@ -26,9 +26,10 @@ class Mosque:
                 6. display map
         """
     # pylint: disable=too-many-instance-attributes
-    # pylint: disable=too-many-local-variables
-    # pylint: disable=too-many-arguments
-    # pylint: disable=too-many-boolean-expressions-in-if-statement
+    # pylint: disable=too-many-locals
+    # pylint: disable=too-many-boolean-expressions
+    # pylint: disable=inconsistent-return-statements
+
     conn = ""
     cursor = ""
     WINDOW_SIZE = "975x150"
