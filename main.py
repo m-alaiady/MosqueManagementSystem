@@ -26,6 +26,9 @@ class Mosque:
                 6. display map
         """
     # pylint: disable=too-many-instance-attributes
+    # pylint: disable=too-many-local-variables
+    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-boolean-expressions-in-if-statement
     conn = ""
     cursor = ""
     WINDOW_SIZE = "975x150"
@@ -87,7 +90,7 @@ class Mosque:
 
         display_all_button = Button(window, text="Display All", command=self.display)
         search_by_name_button = Button(window, text="Search by name", command=self.search)
-        update_entry_button = Button(window, text="Update Entry", command= lambda:self.update(
+        update_entry_button = Button(window, text="Update Entry", command=lambda: self.update(
             self.id_entry.get(), self.imam_name_entry.get()
         ))
         add_entry_button = Button(window, text="Add Entry ", command=lambda: self.insert(
@@ -180,7 +183,8 @@ class Mosque:
             messagebox.showwarning("All fields required", "All fields are required!")
         else:
             regexp = re.compile(
-                r'^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(''\.\d+)?)$'
+                r'^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?'
+                r'(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(''\\.\\d+)?)$'
             )
             if not regexp.search(coordinates):
                 messagebox.showwarning(
@@ -245,7 +249,9 @@ class Mosque:
             messagebox.showwarning("Unknown ID", "Cannot find the specified ID")
             return
 
-        self.__execute(f"UPDATE {self.TABLE_NAME} SET imam_name = '{imam_name}' WHERE ID = '{mosque_id}'")
+        self.__execute(
+            f"UPDATE {self.TABLE_NAME} SET imam_name = '{imam_name}' WHERE ID = '{mosque_id}'"
+        )
         self.conn.commit()
         messagebox.showinfo(
             self.SUCCESS_OPERATION_TEXT, "Record Updated Successfully!"
