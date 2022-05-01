@@ -1,2 +1,0 @@
-- name: pylint-and-format
-  uses: itsvinayak/pylint-and-format@v1.1
