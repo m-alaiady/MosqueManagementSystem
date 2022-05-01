@@ -142,7 +142,7 @@ class Mosque:
         if id == "" or name == "" or type == "" or address == "" or coordinates == "" or imam_name == "":
             messagebox.showwarning("All fields required", "All fields are required!")
         else:
-            regexp = re.compile('^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))('
+            regexp = re.compile(r'^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))('
                                 '\.\d+)?)$')
             if not regexp.search(coordinates):
                 messagebox.showwarning("Invalid coordinates format", "Invalid coordinates!")
