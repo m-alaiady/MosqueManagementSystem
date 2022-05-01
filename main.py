@@ -96,7 +96,7 @@ class Mosque:
             window, text="Delete Entry", command=lambda: self.delete(self.id_entry.get())
         )
         display_on_map_button = Button(
-            window, text="Display on Map", command=lambda: self.display_map()
+            window, text="Display on Map", command=self.display_map
         )
 
         display_all_button.grid(row=4, column=1, pady=10, padx=2)
@@ -133,6 +133,10 @@ class Mosque:
         self.type_value = value
 
     def display(self):
+        """
+             display method
+                 display all records from the table into list box
+         """
         self.__execute(f"SELECT * FROM {self.TABLE_NAME}")
         self.__clean_list_box()
 
@@ -187,16 +191,16 @@ class Mosque:
                         "ID already taken", "ID already taken, choose another one"
                     )
                     return
-                else:
-                    self.__clean_list_box()
-                    self.__execute(f"""
-                        INSERT INTO {self.TABLE_NAME} 
-                        VALUES('{mosque_id}','{name}','{address}','{type.strip()}','{coordinates}','{imam_name}')
-                    """)
-                    self.conn.commit()
-                    messagebox.showinfo(
-                        self.SUCCESS_OPERATION_TEXT, "New Record Inserted Successfully!"
-                    )
+
+                self.__clean_list_box()
+                self.__execute(f"""
+                    INSERT INTO {self.TABLE_NAME} 
+                    VALUES('{mosque_id}','{name}','{address}','{type.strip()}','{coordinates}','{imam_name}')
+                """)
+                self.conn.commit()
+                messagebox.showinfo(
+                    self.SUCCESS_OPERATION_TEXT, "New Record Inserted Successfully!"
+                )
 
     def delete(self, mosque_id):
         """
@@ -237,14 +241,14 @@ class Mosque:
         if exist is None:
             messagebox.showwarning("Unknown ID", "Cannot find the specified ID")
             return
-        else:
-            self.__execute(f"UPDATE {self.TABLE_NAME} SET imam_name = '{imam_name}' WHERE ID = '{mosque_id}'")
-            self.conn.commit()
-            messagebox.showinfo(
-                self.SUCCESS_OPERATION_TEXT, "Record Updated Successfully!"
-            )
-            self.display()
-            return
+
+        self.__execute(f"UPDATE {self.TABLE_NAME} SET imam_name = '{imam_name}' WHERE ID = '{mosque_id}'")
+        self.conn.commit()
+        messagebox.showinfo(
+            self.SUCCESS_OPERATION_TEXT, "Record Updated Successfully!"
+        )
+        self.display()
+        return
 
     def display_map(self):
         """
@@ -252,12 +256,12 @@ class Mosque:
              it shows the mosque's coordinates in a map
         """
         plt.figure("Mosque Location", figsize=(8, 8))
-        map = Basemap(projection='nsper', lon_0=40, lat_0=20)
-        # m = Basemap(width=100, height=100, projection='mill')
-        map.drawcoastlines()
+        basemap_map = Basemap(projection='nsper', lon_0=40, lat_0=20)
+        # basemap_map = Basemap(width=100, height=100, projection='mill')
+        basemap_map.drawcoastlines()
 
-        map.drawcountries()
-        map.bluemarble()
+        basemap_map.drawcountries()
+        basemap_map.bluemarble()
         coordinates = []
         labels = []
         self.__execute(f"SELECT coordinates FROM {self.TABLE_NAME}")
@@ -278,8 +282,8 @@ class Mosque:
 
             for coordinate in coordinates:
                 # Latitude = coordinate[1], Longitude = coordinate[0]
-                xpt, ypt = map(float(coordinate[1]), float(coordinate[0]))
-                map.plot(xpt, ypt, 'ro', markersize=5)
+                xpt, ypt = basemap_map(float(coordinate[1]), float(coordinate[0]))
+                basemap_map.plot(xpt, ypt, 'ro', markersize=5)
                 plt.text(xpt, ypt, labels[label_index], color='white', fontsize=7)
                 label_index += 1
 
