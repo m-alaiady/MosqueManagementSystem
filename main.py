@@ -146,6 +146,10 @@ class Mosque:
                 self.list_box.insert("end", data)
 
     def search(self):
+        """
+            Search method
+                searches for a specific mosque name
+        """
         get_name = self.name_entry.get()
         if get_name == "":
             messagebox.showwarning("Name is Required", "Name is Empty!")
@@ -159,8 +163,12 @@ class Mosque:
             if empty:
                 self.list_box.insert("end", "No Result!")
 
-    def insert(self, id, name, type, address, coordinates, imam_name):
-        if id == "" or name == "" or type == "" \
+    def insert(self, mosque_id, name, type, address, coordinates, imam_name):
+        """
+            insert method
+               insert a new entry into the table
+        """
+        if mosque_id == "" or name == "" or type == "" \
                 or address == "" or coordinates == "" or imam_name == "":
             messagebox.showwarning("All fields required", "All fields are required!")
         else:
@@ -172,7 +180,7 @@ class Mosque:
                     "Invalid coordinates format", "Invalid coordinates!"
                 )
             else:
-                self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{id}'")
+                self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{mosque_id}'")
                 exist = self.cursor.fetchone()
                 if exist:
                     messagebox.showwarning(
@@ -183,25 +191,29 @@ class Mosque:
                     self.__clean_list_box()
                     self.__execute(f"""
                         INSERT INTO {self.TABLE_NAME} 
-                        VALUES('{id}','{name}','{address}','{type.strip()}','{coordinates}','{imam_name}')
+                        VALUES('{mosque_id}','{name}','{address}','{type.strip()}','{coordinates}','{imam_name}')
                     """)
                     self.conn.commit()
                     messagebox.showinfo(
                         self.SUCCESS_OPERATION_TEXT, "New Record Inserted Successfully!"
                     )
 
-    def delete(self, id):
+    def delete(self, mosque_id):
+        """
+            delete method
+               delete a record from the table from the specified mosque_id
+        """
         if self.id_entry.get() == "":
             messagebox.showwarning("ID is Required", "ID is Empty!")
             return
-        self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{id}'")
+        self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{mosque_id}'")
         exist = self.cursor.fetchone()
         if exist is None:
             messagebox.showwarning("Unknown ID", "Cannot find the specified ID")
             return
 
         self.__execute(f"""
-                     DELETE FROM {self.TABLE_NAME} WHERE id = '{id}'
+                     DELETE FROM {self.TABLE_NAME} WHERE id = '{mosque_id}'
                  """)
         self.conn.commit()
         messagebox.showinfo(
@@ -210,19 +222,23 @@ class Mosque:
         self.display()
         return
 
-    def update(self, id, imam_name):
+    def update(self, mosque_id, imam_name):
+        """
+          update method
+             update imam name column from existing record by using mosque_id
+        """
         if self.id_entry.get() == "" or self.imam_name_entry.get() == "":
             messagebox.showwarning(
                 "ID and imam type required", "ID and Imam name are required!"
             )
             return
-        self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{id}'")
+        self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{mosque_id}'")
         exist = self.cursor.fetchone()
         if exist is None:
             messagebox.showwarning("Unknown ID", "Cannot find the specified ID")
             return
         else:
-            self.__execute(f"UPDATE {self.TABLE_NAME} SET imam_name = '{imam_name}' WHERE ID = '{id}'")
+            self.__execute(f"UPDATE {self.TABLE_NAME} SET imam_name = '{imam_name}' WHERE ID = '{mosque_id}'")
             self.conn.commit()
             messagebox.showinfo(
                 self.SUCCESS_OPERATION_TEXT, "Record Updated Successfully!"
@@ -231,6 +247,10 @@ class Mosque:
             return
 
     def display_map(self):
+        """
+          display_map method
+             it shows the mosque's coordinates in a map
+        """
         plt.figure("Mosque Location", figsize=(8, 8))
         map = Basemap(projection='nsper', lon_0=40, lat_0=20)
         # m = Basemap(width=100, height=100, projection='mill')
