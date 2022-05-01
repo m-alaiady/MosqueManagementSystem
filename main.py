@@ -6,6 +6,7 @@
         @author: Mohammed Alaiadhy
         @timestamp: 2022-05-01 06:53 AM
     """
+# pylint: disable=import-error
 import sqlite3
 import re
 from tkinter import Tk, Label, Button, Listbox, Entry, OptionMenu, StringVar, END
@@ -30,7 +31,6 @@ class Mosque:
     # pylint: disable=too-many-arguments
     # pylint: disable=too-many-boolean-expressions
     # pylint: disable=inconsistent-return-statements
-    # pylint: disable=import-error
     conn = ""
     cursor = ""
     WINDOW_SIZE = "975x150"
