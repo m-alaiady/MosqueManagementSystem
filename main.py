@@ -3,6 +3,7 @@ from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 from tkinter import *
 from tkinter import messagebox
+import re
 
 
 class Mosque:
@@ -64,11 +65,11 @@ class Mosque:
         self.lb.place(x=450, y=0, height=145, width=500)
 
         display_all_button = Button(window, text="Display All", command=lambda: self.display())
-        search_by_name_button = Button(window, text="Search by name",  command=lambda: self.search())
+        search_by_name_button = Button(window, text="Search by name", command=lambda: self.search())
         update_entry_button = Button(window, text="Update Entry", command=lambda: self.update(
             self.id_entry.get(), self.imam_name_entry.get()
         ))
-        add_entry_button = Button(window, text="Add Entry ",  command=lambda: self.insert(
+        add_entry_button = Button(window, text="Add Entry ", command=lambda: self.insert(
             self.id_entry.get(), self.name_entry.get(),
             self.type_value, self.address_entry.get(),
             self.coordinates_entry.get(), self.imam_name_entry.get()
@@ -132,60 +133,63 @@ class Mosque:
             info = self.__execute(f"SELECT * FROM {self.TABLE_NAME} WHERE name LIKE '%{get_name}%'")
             empty = True
             for data in info:
-                if data != "":
-                    empty = False
                 self.lb.insert("end", data)
                 return data
             if empty:
                 self.lb.insert("end", "No Result!")
 
-    def insert(self, ID, name, type, address, coordinates, imam_name):
-        if ID == "" or name == "" or type == "" or address == "" or coordinates == "" or imam_name == "":
+    def insert(self, id, name, type, address, coordinates, imam_name):
+        if id == "" or name == "" or type == "" or address == "" or coordinates == "" or imam_name == "":
             messagebox.showwarning("All fields required", "All fields are required!")
         else:
-            self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{ID}'")
-            exist = self.cursor.fetchone()
-            if exist:
-                messagebox.showwarning("ID already taken", "ID already taken, choose another one")
-                return
+            regexp = re.compile('^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))('
+                                '\.\d+)?)$')
+            if not regexp.search(coordinates):
+                messagebox.showwarning("Invalid coordinates format", "Invalid coordinates!")
             else:
-                self.__clean_list_box()
-                self.__execute(f"""
-                    INSERT INTO {self.TABLE_NAME} 
-                    VALUES('{ID}','{name}','{address}','{type.strip()}','{coordinates}','{imam_name}')
-                """)
-                self.conn.commit()
-                messagebox.showinfo(self.SUCCESS_OPERATION_TEXT, "New Record Inserted Successfully!")
+                self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{id}'")
+                exist = self.cursor.fetchone()
+                if exist:
+                    messagebox.showwarning("ID already taken", "ID already taken, choose another one")
+                    return
+                else:
+                    self.__clean_list_box()
+                    self.__execute(f"""
+                        INSERT INTO {self.TABLE_NAME} 
+                        VALUES('{id}','{name}','{address}','{type.strip()}','{coordinates}','{imam_name}')
+                    """)
+                    self.conn.commit()
+                    messagebox.showinfo(self.SUCCESS_OPERATION_TEXT, "New Record Inserted Successfully!")
 
-    def delete(self, ID):
+    def delete(self, id):
         if self.id_entry.get() == "":
             messagebox.showwarning("ID is Required", "ID is Empty!")
             return
-        self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{ID}'")
+        self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{id}'")
         exist = self.cursor.fetchone()
         if exist is None:
             messagebox.showwarning("Unknown ID", "Cannot find the specified ID")
             return
         else:
             self.__execute(f"""
-                         DELETE FROM {self.TABLE_NAME} WHERE id = '{ID}'
+                         DELETE FROM {self.TABLE_NAME} WHERE id = '{id}'
                      """)
             self.conn.commit()
             messagebox.showinfo(self.SUCCESS_OPERATION_TEXT, "Record Deleted Successfully!")
             self.display()
             return
 
-    def update(self, ID, imam_name):
+    def update(self, id, imam_name):
         if self.id_entry.get() == "" or self.imam_name_entry.get() == "":
             messagebox.showwarning("ID and imam type required", "ID and Imam name are required!")
             return
-        self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{ID}'")
+        self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{id}'")
         exist = self.cursor.fetchone()
         if exist is None:
             messagebox.showwarning("Unknown ID", "Cannot find the specified ID")
             return
         else:
-            self.__execute(f"UPDATE {self.TABLE_NAME} SET imam_name = '{imam_name}' WHERE ID = '{ID}'")
+            self.__execute(f"UPDATE {self.TABLE_NAME} SET imam_name = '{imam_name}' WHERE ID = '{id}'")
             self.conn.commit()
             messagebox.showinfo(self.SUCCESS_OPERATION_TEXT, "Record Updated Successfully!")
             self.display()
@@ -227,6 +231,7 @@ class Mosque:
 
     def __del__(self):
         self.conn.close()
+
 
 if __name__ == "__main__":
     mosque = Mosque()
