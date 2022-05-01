@@ -11,17 +11,18 @@ from tkinter import messagebox
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 
-"""
-    Mosque Class
-        @methods
-            1. display
-            2. insert
-            3. delete
-            4. update
-            5. search
-            6. display map
-    """
+
 class Mosque:
+    """
+        Mosque Class
+            @methods
+                1. display
+                2. insert
+                3. delete
+                4. update
+                5. search
+                6. display map
+        """
     conn = ""
     cursor = ""
     WINDOW_SIZE = "975x150"
