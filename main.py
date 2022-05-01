@@ -79,7 +79,9 @@ class Mosque:
         delete_entry_button = Button(
             window, text="Delete Entry", command=lambda: self.delete(self.id_entry.get())
         )
-        display_on_map_button = Button(window, text="Display on Map", command=lambda: self.display_map())
+        display_on_map_button = Button(
+            window, text="Display on Map", command=lambda: self.display_map()
+        )
 
         display_all_button.grid(row=4, column=1, pady=10, padx=2)
         search_by_name_button.grid(row=4, column=2, padx=2)
@@ -143,19 +145,24 @@ class Mosque:
                 self.lb.insert("end", "No Result!")
 
     def insert(self, id, name, type, address, coordinates, imam_name):
-        if id == "" or name == "" or type == "" or address == "" or coordinates == "" or imam_name == "":
+        if id == "" or name == "" or type == "" \
+                or address == "" or coordinates == "" or imam_name == "":
             messagebox.showwarning("All fields required", "All fields are required!")
         else:
             regexp = re.compile(
                 r'^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(''\.\d+)?)$'
             )
             if not regexp.search(coordinates):
-                messagebox.showwarning("Invalid coordinates format", "Invalid coordinates!")
+                messagebox.showwarning(
+                    "Invalid coordinates format", "Invalid coordinates!"
+                )
             else:
                 self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{id}'")
                 exist = self.cursor.fetchone()
                 if exist:
-                    messagebox.showwarning("ID already taken", "ID already taken, choose another one")
+                    messagebox.showwarning(
+                        "ID already taken", "ID already taken, choose another one"
+                    )
                     return
                 else:
                     self.__clean_list_box()
@@ -164,7 +171,9 @@ class Mosque:
                         VALUES('{id}','{name}','{address}','{type.strip()}','{coordinates}','{imam_name}')
                     """)
                     self.conn.commit()
-                    messagebox.showinfo(self.SUCCESS_OPERATION_TEXT, "New Record Inserted Successfully!")
+                    messagebox.showinfo(
+                        self.SUCCESS_OPERATION_TEXT, "New Record Inserted Successfully!"
+                    )
 
     def delete(self, id):
         if self.id_entry.get() == "":
@@ -180,13 +189,17 @@ class Mosque:
                          DELETE FROM {self.TABLE_NAME} WHERE id = '{id}'
                      """)
             self.conn.commit()
-            messagebox.showinfo(self.SUCCESS_OPERATION_TEXT, "Record Deleted Successfully!")
+            messagebox.showinfo(
+                self.SUCCESS_OPERATION_TEXT, "Record Deleted Successfully!"
+            )
             self.display()
             return
 
     def update(self, id, imam_name):
         if self.id_entry.get() == "" or self.imam_name_entry.get() == "":
-            messagebox.showwarning("ID and imam type required", "ID and Imam name are required!")
+            messagebox.showwarning(
+                "ID and imam type required", "ID and Imam name are required!"
+            )
             return
         self.__execute(f" SELECT * FROM {self.TABLE_NAME} WHERE id = '{id}'")
         exist = self.cursor.fetchone()
@@ -196,7 +209,9 @@ class Mosque:
         else:
             self.__execute(f"UPDATE {self.TABLE_NAME} SET imam_name = '{imam_name}' WHERE ID = '{id}'")
             self.conn.commit()
-            messagebox.showinfo(self.SUCCESS_OPERATION_TEXT, "Record Updated Successfully!")
+            messagebox.showinfo(
+                self.SUCCESS_OPERATION_TEXT, "Record Updated Successfully!"
+            )
             self.display()
             return
 
@@ -214,7 +229,9 @@ class Mosque:
         exist = self.cursor.fetchone()
 
         if exist is None:
-            messagebox.showwarning("No data", "There is no data to display on map!")
+            messagebox.showwarning(
+                "No data", "There is no data to display on map!"
+            )
         else:
             self.__execute(f"SELECT coordinates,name FROM {self.TABLE_NAME}")
             rows = self.cursor.fetchall()
