@@ -20,11 +20,17 @@ class Mosque:
         Mosque Class
             @methods
                 1. display
+			for display all data into ListBox
                 2. insert
+			for insert a new record into the table
                 3. delete
+			for deleting a record from the table
                 4. update
+			for updating imam name from an existing record from the table
                 5. search
+			for searching a record through their name
                 6. display map
+			for display mosque location according to their coordinates
         """
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-many-locals
