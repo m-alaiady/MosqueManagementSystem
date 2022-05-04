@@ -1,7 +1,7 @@
 """
     Mosque Management System
         enable users to add, update, delete, search, display,
-        as well as display on map mosques around the world
+        as well as display mosques location on a map
 
         @author: Mohammed Alaiadhy
         @timestamp: 2022-05-01 06:53 AM
