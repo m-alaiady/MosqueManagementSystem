@@ -4,7 +4,7 @@
         as well as display mosques location on a map
 
         @author: Mohammed Alaiadhy
-        @timestamp: 2022-05-01 06:53 AM
+        @date 2022-05-01 06:53 AM
     """
 # pylint: disable=import-error
 import sqlite3
