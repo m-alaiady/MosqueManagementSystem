@@ -9,6 +9,7 @@
 # pylint: disable=import-error
 import sqlite3
 import re
+from  difflib import get_close_matches
 from tkinter import Tk, Label, Button, Listbox, Entry, OptionMenu, StringVar, END
 from tkinter import messagebox
 from mpl_toolkits.basemap import Basemap
@@ -173,12 +174,21 @@ class Mosque:
             messagebox.showwarning("Name is Required", "Name is Empty!")
         else:
             self.__clean_list_box()
-            info = self.__execute(f"SELECT * FROM {self.TABLE_NAME} WHERE name LIKE '%{get_name}%'")
+            # info = self.__execute(f"SELECT * FROM {self.TABLE_NAME} WHERE name LIKE '%{get_name}%'")
+            info = self.__execute(f"SELECT * FROM {self.TABLE_NAME}")
             empty = True
+            names = []
+
             for data in info:
-                self.list_box.insert("end", data)
-                return data
-            if empty:
+                names.append(data[1])
+
+            matches = get_close_matches(get_name, names, 2, 0.2)
+            for match in matches:
+                info = self.__execute(f"SELECT * FROM {self.TABLE_NAME} WHERE name = '{match}'")
+                for data in info:
+                    self.list_box.insert("end", data)
+
+            if not matches:
                 self.list_box.insert("end", "No Result!")
 
     def insert(self, mosque_id, name, mosque_type, address, coordinates, imam_name):
