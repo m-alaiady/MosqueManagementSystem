@@ -174,9 +174,7 @@ class Mosque:
             messagebox.showwarning("Name is Required", "Name is Empty!")
         else:
             self.__clean_list_box()
-            # info = self.__execute(f"SELECT * FROM {self.TABLE_NAME} WHERE name LIKE '%{get_name}%'")
             info = self.__execute(f"SELECT * FROM {self.TABLE_NAME}")
-            empty = True
             names = []
 
             for data in info:
