@@ -8,7 +8,6 @@ A mosque management system project made by using python OOP it have the followin
 5. **Search**
 6. **Display Map**
 
-
 ### Screen Shots
 ![123](https://user-images.githubusercontent.com/84629651/166123554-1513b012-ef11-447f-a5bc-1473e0c00ba2.png)
 
